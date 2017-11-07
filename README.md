@@ -155,25 +155,11 @@ We have tried to keep the operations as close as possible.
 ## TODO
 
  - Implement remaining components:
-   - Beer
    - Bitcoin
-   - Cat
-   - ChuckNorris
-   - Code
-   - Crypto
-   - Educator
-   - Finance
-   - GameOfThrones
-   - Hacker
-   - Hipster
-   - IDNumber
-   - Pokemon
-   - Shakespeare
-   - Space
    - Placeholdit
-   - Superhero
    - StarWars
    - Vehicle
+   - Person (comprehensive personal attributes)
 
 ## Contact
 
