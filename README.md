@@ -102,10 +102,6 @@ We have tried to keep the operations as close as possible.
 - Zelda
 - PickRandom
 
-Usage with Locales
-
-### Warnings
-
 ### Supported Locales
 -----
 - bg
