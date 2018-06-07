@@ -1,10 +1,32 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker.component;
 
 
-import java.util.Collection;
-
 import com.github.javafaker.Faker;
 import com.github.javafaker.FakerElement;
+
+import java.util.Collection;
 
 /**
  * Class to pick random items from a known collection, enum, array or VargArgs
@@ -12,18 +34,18 @@ import com.github.javafaker.FakerElement;
 public class PickRandom extends FakerElement {
 
     /**
-	 * @param faker
-	 */
-	public PickRandom(Faker faker) {
-		super(faker);
-	}
+     * @param faker
+     */
+    public PickRandom(Faker faker) {
+        super(faker);
+    }
 
-	@SuppressWarnings("unchecked")
-	public < T extends Enum<T>>T fromEnum(Class<T> clazz){
+    @SuppressWarnings("unchecked")
+    public <T extends Enum<T>> T fromEnum(Class<T> clazz) {
 
         Object[] possibleValues = null;
 
-        if(clazz != null) {
+        if (clazz != null) {
 
             possibleValues = clazz.getEnumConstants();
 
@@ -36,24 +58,24 @@ public class PickRandom extends FakerElement {
         return fromArray((T[]) possibleValues);
     }
 
-    public <T > T fromArray(T[] array) {
+    public <T> T fromArray(T[] array) {
 
         //Integer  randex = randomHelper.number(array.length - 1);
-    	
-    	Integer  randex = faker.random().nextInt(array.length - 1);
+
+        Integer randex = faker.random().nextInt(array.length - 1);
 
         return array[randex];
     }
 
 
     @SafeVarargs
-    public final <T > T fromVarArgs(T... array){
+    public final <T> T fromVarArgs(T... array) {
 
         return fromArray(array);
     }
 
     @SuppressWarnings("unchecked")
-    public <T > T fromCollection(Collection<T> coll){
+    public <T> T fromCollection(Collection<T> coll) {
 
         return fromArray((T[]) coll.toArray());
     }

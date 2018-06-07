@@ -159,6 +159,7 @@ We have tried to keep the operations as close as possible.
    - Placeholdit
    - StarWars
    - Vehicle
+   - Read test data from configuration file
    - Person (comprehensive personal attributes)
 
 ## Contact

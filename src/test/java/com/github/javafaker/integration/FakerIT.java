@@ -1,8 +1,29 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker.integration;
 
 import com.github.javafaker.Faker;
 import com.google.common.collect.Maps;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +34,28 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.reflections.ReflectionUtils.*;
+import static org.reflections.ReflectionUtils.getAllMethods;
+import static org.reflections.ReflectionUtils.withModifier;
+import static org.reflections.ReflectionUtils.withParametersCount;
+import static org.reflections.ReflectionUtils.withReturnType;
 
 /**
  * The purpose of these tests is to ensure that the Locales have been properly configured
@@ -30,24 +66,24 @@ import static org.reflections.ReflectionUtils.*;
 public class FakerIT {
 
     private static final Logger logger = LoggerFactory.getLogger(FakerIT.class);
-    private final Locale locale;
-    private final Faker faker;
-
     /**
      * a collection of Locales -> Exceptions.
      * In the case of 'pt', city_prefix is '' by design. This test fails because it's testing that all string returning
-     * methods return a non blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put 
+     * methods return a non blank string. But pt city_prefix is blank ,but the test shouldn't fail. So we add put
      * exceptions like this into this collection.
      */
     private static final Map<Locale, List<String>> exceptions = Maps.newHashMap();
+
     static {
         // 'it' has an empty suffix list so it never returns a value
         exceptions.put(new Locale("it"), Arrays.asList("Name.suffix"));
         exceptions.put(new Locale("es-mx"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
         exceptions.put(new Locale("pt"), Arrays.asList("Address.cityPrefix", "Address.citySuffix"));
-        exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix",
-                "Address.cityPrefix", "Address.citySuffix"));
+        exceptions.put(new Locale("uk"), Arrays.asList("Address.stateAbbr", "Address.streetSuffix", "Address.cityPrefix", "Address.citySuffix"));
     }
+
+    private final Locale locale;
+    private final Faker faker;
 
     public FakerIT(Locale locale, Random random) {
         this.locale = locale;
@@ -64,15 +100,8 @@ public class FakerIT {
 
     @Parameterized.Parameters(name = "testing locale {0} and random {1}")
     public static Collection<Object[]> data() {
-        Object[][] data = new Object[][]{
-                {Locale.ENGLISH, new Random()},
-                {new Locale("pt-BR"), null},
-                {new Locale("pt-br"), null},
-                {new Locale("Pt_br"), null},
-                {new Locale("pT_Br"), null},
-                {new Locale("pt","Br","x2"), null},
-                {null, new Random()},
-                {null, null}};
+        Object[][] data = new Object[][] {{Locale.ENGLISH, new Random()}, {new Locale("pt-BR"), null}, {new Locale("pt-br"), null}, {new Locale("Pt_br"), null}, {new Locale("pT_Br"), null},
+            {new Locale("pt", "Br", "x2"), null}, {null, new Random()}, {null, null}};
 
         String[] ymlFiles = new File("./src/main/resources").list();
         int numberOfYmlFiles = ymlFiles.length;
@@ -140,11 +169,7 @@ public class FakerIT {
     }
 
     private void testAllMethodsThatReturnStringsActuallyReturnStrings(Object object) throws Exception {
-        @SuppressWarnings("unchecked")
-        Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(),
-                withModifier(Modifier.PUBLIC),
-                withReturnType(String.class),
-                withParametersCount(0));
+        @SuppressWarnings("unchecked") Set<Method> methodsThatReturnStrings = getAllMethods(object.getClass(), withModifier(Modifier.PUBLIC), withReturnType(String.class), withParametersCount(0));
 
         for (Method method : methodsThatReturnStrings) {
             if (isExcepted(object, method)) {
@@ -156,14 +181,15 @@ public class FakerIT {
             assertThat(failureReason, returnValue, is(instanceOf(String.class)));
             final String returnValueAsString = (String) returnValue;
             assertThat(failureReason, returnValueAsString, not(isEmptyOrNullString()));
-            assertThat(failureReason + " is a slash encoded regex", returnValueAsString,
-                       not(allOf(startsWith("/"), endsWith("/"))));
+            assertThat(failureReason + " is a slash encoded regex", returnValueAsString, not(allOf(startsWith("/"), endsWith("/"))));
         }
     }
 
     private boolean isExcepted(Object object, Method method) {
         final List<String> classDotMethod = exceptions.get(this.locale);
-        if (classDotMethod == null) {return false;}
+        if (classDotMethod == null) {
+            return false;
+        }
         return classDotMethod.contains(object.getClass().getSimpleName() + "." + method.getName());
     }
 

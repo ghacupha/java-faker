@@ -1,3 +1,25 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker;
 
 import com.github.javafaker.repeating.Repeat;
@@ -13,7 +35,16 @@ import java.util.Locale;
 import static com.github.javafaker.matchers.CountOfCharactersMatcher.countOf;
 import static com.github.javafaker.matchers.MatchesRegularExpression.matchesRegularExpression;
 import static java.lang.Integer.parseInt;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 public class InternetTest extends AbstractFakerTest {
@@ -34,21 +65,20 @@ public class InternetTest extends AbstractFakerTest {
     @Test
     public void testSafeEmailAddress() {
         List<String> emails = Lists.newArrayList();
-        for (int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress();
             assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
             emails.add(emailAddress);
         }
         final String safeDomain = faker.resolve("internet.safe_email");
 
-        assertThat("Should find at least one email from " + safeDomain, emails,
-                Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+        assertThat("Should find at least one email from " + safeDomain, emails, Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
     }
 
     @Test
     public void testSafeEmailAddressWithLocalPartParameter() {
         List<String> emails = Lists.newArrayList();
-        for (int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             String emailAddress = faker.internet().safeEmailAddress("john");
             assertThat(emailAddress, startsWith("john@"));
             assertThat(EmailValidator.getInstance().isValid(emailAddress), is(true));
@@ -56,8 +86,7 @@ public class InternetTest extends AbstractFakerTest {
         }
         final String safeDomain = faker.resolve("internet.safe_email");
 
-        assertThat("Should find at least one email from " + safeDomain, emails,
-                Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
+        assertThat("Should find at least one email from " + safeDomain, emails, Matchers.hasItem(Matchers.endsWith("@" + safeDomain)));
     }
 
     @Test
@@ -88,7 +117,7 @@ public class InternetTest extends AbstractFakerTest {
 
     @Test
     public void testDomainSuffix() {
-      assertThat(faker.internet().domainSuffix(), matchesRegularExpression("\\w{2,4}"));
+        assertThat(faker.internet().domainSuffix(), matchesRegularExpression("\\w{2,4}"));
     }
 
     @Test
@@ -132,11 +161,8 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().macAddress("01:02"), countOf(':', is(5)));
 
         // loop through 1000 times just to 'run it through the wringer'
-        for (int i=0; i<1000;i++) {
-            assertThat(
-              "Is valid mac format",
-              faker.internet().macAddress(),
-              matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
+        for (int i = 0; i < 1000; i++) {
+            assertThat("Is valid mac format", faker.internet().macAddress(), matchesRegularExpression("[0-9a-fA-F]{2}(\\:([0-9a-fA-F]{1,4})){5}"));
         }
     }
 
@@ -145,14 +171,10 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().ipV4Address(), countOf('.', is(3)));
         for (int i = 0; i < 100; i++) {
             final String[] octets = faker.internet().ipV4Address().split("\\.");
-            assertThat("first octet is 1-255", parseInt(octets[0]),
-                    both(greaterThan(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[1]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[2]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
-            assertThat("second octet is 0-255", parseInt(octets[3]),
-                    both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+            assertThat("first octet is 1-255", parseInt(octets[0]), both(greaterThan(0)).and(lessThanOrEqualTo(255)));
+            assertThat("second octet is 0-255", parseInt(octets[1]), both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+            assertThat("second octet is 0-255", parseInt(octets[2]), both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
+            assertThat("second octet is 0-255", parseInt(octets[3]), both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(255)));
         }
     }
 
@@ -160,10 +182,9 @@ public class InternetTest extends AbstractFakerTest {
     public void testIpV4Cidr() {
         assertThat(faker.internet().ipV4Cidr(), countOf('.', is(3)));
         assertThat(faker.internet().ipV4Cidr(), countOf('/', is(1)));
-        
+
         for (int i = 0; i < 1000; i++) {
-            assertThat(parseInt(faker.internet().ipV4Cidr().split("\\/")[1]),
-                    both(greaterThanOrEqualTo(1)).and(lessThan(32)));
+            assertThat(parseInt(faker.internet().ipV4Cidr().split("\\/")[1]), both(greaterThanOrEqualTo(1)).and(lessThan(32)));
         }
     }
 
@@ -175,14 +196,11 @@ public class InternetTest extends AbstractFakerTest {
         String oneNineTwo = "^192\\.168\\..+";
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\..+";
 
-        
+
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().privateIpV4Address();
-            assertThat(addr, anyOf(matchesRegularExpression(tenDot),
-                    matchesRegularExpression(oneTwoSeven),
-                    matchesRegularExpression(oneSixNine),
-                    matchesRegularExpression(oneNineTwo),
-                    matchesRegularExpression(oneSevenTwo)));
+            assertThat(addr, anyOf(matchesRegularExpression(tenDot), matchesRegularExpression(oneTwoSeven), matchesRegularExpression(oneSixNine), matchesRegularExpression(oneNineTwo),
+                matchesRegularExpression(oneSevenTwo)));
         }
     }
 
@@ -195,23 +213,20 @@ public class InternetTest extends AbstractFakerTest {
         String oneSevenTwo = "^172\\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\\.";
         for (int i = 0; i < 1000; i++) {
             String addr = faker.internet().publicIpV4Address();
-            assertThat(addr.matches(tenDot),is(false));
-            assertThat(addr.matches(oneTwoSeven),is(false));
-            assertThat(addr.matches(oneSixNine),is(false));
-            assertThat(addr.matches(oneNineTwo),is(false));
-            assertThat(addr.matches(oneSevenTwo),is(false));
+            assertThat(addr.matches(tenDot), is(false));
+            assertThat(addr.matches(oneTwoSeven), is(false));
+            assertThat(addr.matches(oneSixNine), is(false));
+            assertThat(addr.matches(oneNineTwo), is(false));
+            assertThat(addr.matches(oneSevenTwo), is(false));
         }
     }
 
     @Test
     public void testIpV6() {
         assertThat(faker.internet().ipV6Address(), countOf(':', is(7)));
-        
+
         for (int i = 0; i < 1000; i++) {
-            assertThat(
-                    "Is valid ipv6 format",
-                    faker.internet().ipV6Address(),
-                    matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
+            assertThat("Is valid ipv6 format", faker.internet().ipV6Address(), matchesRegularExpression("[0-9a-fA-F]{1,4}(\\:([0-9a-fA-F]{1,4})){1,7}"));
         }
     }
 
@@ -221,25 +236,24 @@ public class InternetTest extends AbstractFakerTest {
         assertThat(faker.internet().ipV6Cidr(), countOf('/', is(1)));
 
         for (int i = 0; i < 1000; i++) {
-            assertThat(parseInt(faker.internet().ipV6Cidr().split("\\/")[1]),
-                    both(greaterThanOrEqualTo(1)).and(lessThan(128)));
+            assertThat(parseInt(faker.internet().ipV6Cidr().split("\\/")[1]), both(greaterThanOrEqualTo(1)).and(lessThan(128)));
         }
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testSlugWithParams() {
         assertThat(faker.internet().slug(ImmutableList.of("a", "b"), "-"), matchesRegularExpression("[a-zA-Z]+\\-[a-zA-Z]+"));
     }
 
     @Test
-    @Repeat(times=10)
+    @Repeat(times = 10)
     public void testSlug() {
         assertThat(faker.internet().slug(), matchesRegularExpression("[a-zA-Z]+\\_[a-zA-Z]+"));
     }
 
     @Test
-    @Repeat(times=100)
+    @Repeat(times = 100)
     public void testFarsiIDNs() {
         // in this case, we're just making sure Farsi doesn't blow up.
         // there have been issues with Farsi not being produced.

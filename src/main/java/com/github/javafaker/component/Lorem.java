@@ -1,9 +1,30 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker.component;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.FakerElement;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +33,28 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public class Lorem extends FakerElement {
-    
-    /**
-	 * @param faker
-	 */
-	public Lorem(Faker faker) {
-		super(faker);
-	}
 
-	public char character() {
+    private static final char[] characters;
+
+    static {
+        StringBuilder builder = new StringBuilder(36);
+        for (char number = '0'; number <= '9'; number++) {
+            builder.append(number);
+        }
+        for (char character = 'a'; character <= 'z'; character++) {
+            builder.append(character);
+        }
+        characters = builder.toString().toCharArray();
+    }
+
+    /**
+     * @param faker
+     */
+    public Lorem(Faker faker) {
+        super(faker);
+    }
+
+    public char character() {
         return character(false);
     }
 
@@ -81,6 +115,7 @@ public class Lorem extends FakerElement {
 
     /**
      * Create a sentence with a random number of words within the range 4..10.
+     *
      * @return a random sentence
      */
     public String sentence() {
@@ -89,6 +124,7 @@ public class Lorem extends FakerElement {
 
     /**
      * Create a sentence with a random number of words within the range (wordCount+1)..(wordCount+6).
+     *
      * @param wordCount
      * @return a random sentence
      */
@@ -98,8 +134,9 @@ public class Lorem extends FakerElement {
 
     /**
      * Create a sentence with a random number of words within the range (wordCount+1)..(wordCount+randomWordsToAdd).</p>
-     * 
+     * <p>
      * Set {@code randomWordsToAdd} to 0 to generate sentences with a fixed number of words.
+     *
      * @param wordCount
      * @param randomWordsToAdd
      * @return a random sentence
@@ -147,18 +184,5 @@ public class Lorem extends FakerElement {
         }
         return StringUtils.substring(builder.toString(), 0, numberOfLetters);
     }
-
-    static {
-        StringBuilder builder = new StringBuilder(36);
-        for (char number = '0'; number <= '9'; number++) {
-            builder.append(number);
-        }
-        for (char character = 'a'; character <= 'z'; character++) {
-            builder.append(character);
-        }
-        characters = builder.toString().toCharArray();
-    }
-
-    private static final char[] characters;
 
 }

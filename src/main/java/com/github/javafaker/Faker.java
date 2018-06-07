@@ -1,3 +1,25 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker;
 
 import com.github.javafaker.component.Address;
@@ -518,9 +540,9 @@ public class Faker {
     public Witcher witcher() {
         return witcher;
     }
-    
+
     public PickRandom pickRandom() {
-    	return pickRandom;
+        return pickRandom;
     }
 
     public String resolve(String key) {
@@ -529,15 +551,16 @@ public class Faker {
 
     /**
      * Allows the evaluation of native YML expressions to allow you to build your own.
-     *
+     * <p>
      * The following are valid expressions:
      * <ul>
-     *     <li>#{regexify '(a|b){2,3}'}</li>
-     *     <li>#{regexify '\\.\\*\\?\\+'}</li>
-     *     <li>#{bothify '????','false'}</li>
-     *     <li>#{Name.first_name} #{Name.first_name} #{Name.last_name}</li>
-     *     <li>#{number.number_between '1','10'}</li>
+     * <li>#{regexify '(a|b){2,3}'}</li>
+     * <li>#{regexify '\\.\\*\\?\\+'}</li>
+     * <li>#{bothify '????','false'}</li>
+     * <li>#{Name.first_name} #{Name.first_name} #{Name.last_name}</li>
+     * <li>#{number.number_between '1','10'}</li>
      * </ul>
+     *
      * @param expression (see examples above)
      * @return the evaluated string expression
      * @throws RuntimeException if unable to evaluate the expression

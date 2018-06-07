@@ -1,3 +1,25 @@
+/*
+ * The MIT License
+ * Copyright © 2018 Edwin Njeru
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package com.github.javafaker.component;
 
 import com.github.javafaker.Faker;
@@ -14,20 +36,18 @@ import static org.apache.commons.lang3.StringUtils.join;
 public class Internet extends FakerElement {
 
     /**
-	 * @param faker
-	 */
-	public Internet(Faker faker) {
-		super(faker);
-	}
+     * @param faker
+     */
+    public Internet(Faker faker) {
+        super(faker);
+    }
 
-	public String emailAddress() {
+    public String emailAddress() {
         return emailAddress(faker.name().username());
     }
 
     public String emailAddress(String localPart) {
-        return join(localPart,
-                "@",
-                FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.free_email", this, faker)));
+        return join(localPart, "@", FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.free_email", this, faker)));
     }
 
     public String safeEmailAddress() {
@@ -35,9 +55,7 @@ public class Internet extends FakerElement {
     }
 
     public String safeEmailAddress(String localPart) {
-        return join(localPart, 
-                "@",
-                FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.safe_email", this, faker)));
+        return join(localPart, "@", FakerIDN.toASCII(faker.fakeValuesService().resolve("internet.safe_email", this, faker)));
     }
 
     public String domainName() {
@@ -53,17 +71,7 @@ public class Internet extends FakerElement {
     }
 
     public String url() {
-        return join(new Object[]{
-                "www",
-                ".",
-                FakerIDN.toASCII(
-                        faker.name().firstName().toLowerCase().replaceAll("'", "") +
-                                "-" +
-                                domainWord()
-                ),
-                ".",
-                domainSuffix()
-        });
+        return join(new Object[] {"www", ".", FakerIDN.toASCII(faker.name().firstName().toLowerCase().replaceAll("'", "") + "-" + domainWord()), ".", domainSuffix()});
     }
 
     /**
@@ -87,10 +95,10 @@ public class Internet extends FakerElement {
      */
     public String image() {
         String[] dimension = StringUtils.split(faker.fakeValuesService().resolve("internet.image_dimension", this, faker), 'x');
-        if (dimension.length == 0) return "";
-        return image(
-                Integer.valueOf(StringUtils.trim(dimension[0])), Integer.valueOf(StringUtils.trim(dimension[1])),
-                faker.bool().bool(), null);
+        if (dimension.length == 0) {
+            return "";
+        }
+        return image(Integer.valueOf(StringUtils.trim(dimension[0])), Integer.valueOf(StringUtils.trim(dimension[1])), faker.bool().bool(), null);
     }
 
     /**
@@ -103,9 +111,8 @@ public class Internet extends FakerElement {
      * @return an url to a random image with the given characteristics.
      */
     public String image(Integer width, Integer height, Boolean gray, String text) {
-        return String.format("http://lorempixel.com/%s%s/%s/%s/%s",
-                gray ? "g/" : StringUtils.EMPTY, width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
-                StringUtils.isEmpty(text) ? StringUtils.EMPTY : text);
+        return String.format("http://lorempixel.com/%s%s/%s/%s/%s", gray ? "g/" : StringUtils.EMPTY, width, height, faker.fakeValuesService().resolve("internet.image_category", this, faker),
+            StringUtils.isEmpty(text) ? StringUtils.EMPTY : text);
     }
 
     public String password() {
@@ -123,7 +130,7 @@ public class Internet extends FakerElement {
     public String password(int minimumLength, int maximumLength, boolean includeUppercase, boolean includeSpecial) {
         if (includeSpecial) {
             char[] password = faker.lorem().characters(minimumLength, maximumLength, includeUppercase).toCharArray();
-            char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
+            char[] special = new char[] {'!', '@', '#', '$', '%', '^', '&', '*'};
             for (int i = 0; i < faker.random().nextInt(minimumLength); i++) {
                 password[faker.random().nextInt(password.length)] = special[faker.random().nextInt(special.length)];
             }
@@ -132,20 +139,19 @@ public class Internet extends FakerElement {
             return faker.lorem().characters(minimumLength, maximumLength, includeUppercase);
         }
     }
-    
+
     /**
      * <p>Returns a MAC address in the following format: 6-bytes in MM:MM:MM:SS:SS:SS format.</p>
-     * @return a correctly formatted MAC address
+     *
      * @param prefix a prefix to put on the front of the address
+     * @return a correctly formatted MAC address
      */
     public String macAddress(String prefix) {
         final String tmp = (prefix == null) ? "" : prefix;
-        final int prefixLength = tmp.trim().length() == 0 
-          ? 0 
-          : tmp.split(":").length;
-        
+        final int prefixLength = tmp.trim().length() == 0 ? 0 : tmp.split(":").length;
+
         final StringBuilder out = new StringBuilder(tmp);
-        for (int i=0;i < 6 - prefixLength;i++) {
+        for (int i = 0; i < 6 - prefixLength; i++) {
             if (out.length() > 0) {
                 out.append(':');
             }
@@ -156,36 +162,30 @@ public class Internet extends FakerElement {
     }
 
     /**
-     * @see Internet#macAddress(String) 
+     * @see Internet#macAddress(String)
      */
     public String macAddress() {
         return macAddress("");
     }
 
     /**
-     * returns an IPv4 address in dot separated octets. 
+     * returns an IPv4 address in dot separated octets.
+     *
      * @return a correctly formatted IPv4 address.
      */
     public String ipV4Address() {
-        return String.format("%d.%d.%d.%d",
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2,
-          faker.random().nextInt(254) + 2);
+        return String.format("%d.%d.%d.%d", faker.random().nextInt(254) + 2, faker.random().nextInt(254) + 2, faker.random().nextInt(254) + 2, faker.random().nextInt(254) + 2);
     }
 
     /**
      * @return a valid private IPV4 address in dot notation
      */
     public String privateIpV4Address() {
-        final Integer[] PRIVATE_FIRST_OCTET = {10,127,169,192,172};
-        final Integer[] PRIVATE_SECOND_OCTET_172 = {16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+        final Integer[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
+        final Integer[] PRIVATE_SECOND_OCTET_172 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
 
         final RandomService r = faker.random();
-        int first = random(PRIVATE_FIRST_OCTET),
-                second = r.nextInt(256),
-                third = r.nextInt(256),
-                fourth = r.nextInt(256);
+        int first = random(PRIVATE_FIRST_OCTET), second = r.nextInt(256), third = r.nextInt(256), fourth = r.nextInt(256);
 
         switch (first) {
             case 172:
@@ -206,14 +206,11 @@ public class Internet extends FakerElement {
      */
     public String publicIpV4Address() {
         final RandomService r = faker.random();
-        
-        final int[] PRIVATE_FIRST_OCTET = {10,127,169,192,172};
 
-        int first = r.nextInt(256),
-                second = r.nextInt(256),
-                third = r.nextInt(256),
-                fourth = r.nextInt(256);
-        
+        final int[] PRIVATE_FIRST_OCTET = {10, 127, 169, 192, 172};
+
+        int first = r.nextInt(256), second = r.nextInt(256), third = r.nextInt(256), fourth = r.nextInt(256);
+
         while (Arrays.binarySearch(PRIVATE_FIRST_OCTET, first) > 0) {
             first = r.nextInt(256);
         }
@@ -224,19 +221,17 @@ public class Internet extends FakerElement {
      * @return a valid IPV4 CIDR
      */
     public String ipV4Cidr() {
-        return new StringBuilder(ipV4Address())
-          .append('/')
-          .append(faker.random().nextInt(31) + 1)
-          .toString();
+        return new StringBuilder(ipV4Address()).append('/').append(faker.random().nextInt(31) + 1).toString();
     }
 
     /**
      * <p>Returns an IPv6 address in hh:hh:hh:hh:hh:hh:hh:hh format.</p>
+     *
      * @return a correctly formatted IPv6 address.
      */
     public String ipV6Address() {
         final StringBuilder tmp = new StringBuilder();
-        for (int i=0;i < 8;i++) {
+        for (int i = 0; i < 8; i++) {
             if (i > 0) {
                 tmp.append(":");
             }
@@ -252,10 +247,7 @@ public class Internet extends FakerElement {
      * @return a valid IPV6 CIDR
      */
     public String ipV6Cidr() {
-        return new StringBuilder(ipV6Address())
-          .append('/')
-          .append(faker.random().nextInt(127) + 1)
-          .toString();
+        return new StringBuilder(ipV6Address()).append('/').append(faker.random().nextInt(127) + 1).toString();
     }
 
     /**
@@ -271,12 +263,8 @@ public class Internet extends FakerElement {
      * @return a slug string combining wordsOrNull with glueOrNull (ex. x_y)
      */
     public String slug(List<String> wordsOrNull, String glueOrNull) {
-        final String glue = glueOrNull == null
-                ? "_"
-                : glueOrNull;
-        final List<String> words = wordsOrNull == null
-                ? faker.lorem().words(2)
-                : wordsOrNull;
+        final String glue = glueOrNull == null ? "_" : glueOrNull;
+        final List<String> words = wordsOrNull == null ? faker.lorem().words(2) : wordsOrNull;
 
         final StringBuilder slug = new StringBuilder();
         for (int i = 0; i < words.size(); i++) {
@@ -287,7 +275,7 @@ public class Internet extends FakerElement {
         }
         return slug.toString();
     }
-          
+
     private <T> T random(T[] src) {
         return src[faker.random().nextInt(src.length)];
     }

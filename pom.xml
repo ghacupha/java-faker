@@ -1,3 +1,27 @@
+<!--
+
+    The MIT License
+    Copyright © 2018 Edwin Njeru
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.javafaker</groupId>
@@ -6,14 +30,46 @@
     <version>0.14-SNAPSHOT</version>
     <name>Java Faker</name>
     <description>
-    	This library is a port of Ruby's stympy/faker gem (as well as Perl's Data::Faker library) that generates fake data.
-        It's useful when you're developing a new project and need some pretty data for showcase.
+    	Fake data generator
     </description>
-    <url>http://github.com/DiUS/java-faker</url>
+    <inceptionYear>2018</inceptionYear>
+    <url>http://github.com/ghacupha/java-faker</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.enforcer.required.maven.version>3.2.5</maven.enforcer.required.maven.version>
+        <changelog.template.file></changelog.template.file>
+
+        <!--Mycila License plugin-->
+        <mycila.license.maven.plugin.version>3.0</mycila.license.maven.plugin.version>
+        <license.header.location>com/mycila/maven/plugin/license/templates/MIT.txt</license.header.location>
+        <license.header.definition>${project.basedir}/config/header_definition.xml</license.header.definition>
+        <license.maven.owner>Edwin Njeru</license.maven.owner>
+        <license.maven.email>mailnjeru@gmail.com</license.maven.email>
+
+        <!-- Properties for maven-checkstyle-plugin -->
+        <checkstyle.config.headerFile>${project.basedir}/config/License_Header.txt</checkstyle.config.headerFile>
+        <checkstyle.config.headerLocation>${project.basedir}/config/checkstyle/checkstyle.xml</checkstyle.config.headerLocation>
+        <checkstyle.config.consoleOutput>true</checkstyle.config.consoleOutput>
+        <checkstyle.config.failsOnError>true</checkstyle.config.failsOnError>
+        <checkstyle.config.includeResources>false</checkstyle.config.includeResources>
+        <checkstyle.config.includeTestResources>false</checkstyle.config.includeTestResources>
+        <checkstyle.config.includeTestResources>false</checkstyle.config.includeTestResources>
+        <checkstyle.config.includeTestSourceDirectory>false</checkstyle.config.includeTestSourceDirectory>
+        <checkstyle.config.maxAllowedViolations>360</checkstyle.config.maxAllowedViolations>
+        <linkXRef>false</linkXRef>
+
+        <!--Plugins-->
+        <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
+        <git-changelog-maven-plugin.version>1.54</git-changelog-maven-plugin.version>
+        <maven.enforcer.plugin.version>3.0.0-M1</maven.enforcer.plugin.version>
+        <maven-javadoc-plugin.version>3.0.0-M1</maven-javadoc-plugin.version>
+        <spotbugs-maven-plugin.version>3.1.0-RC6</spotbugs-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+
     </properties>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -21,34 +77,27 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <scm>
-        <connection>scm:git:git://github.com/DiUS/java-faker.git</connection>
-        <developerConnection>scm:git:git@github.com:DiUS/java-faker.git</developerConnection>
-        <url>git://github.com/DiUS/java-faker.git</url>
+        <connection>scm:git://github.com/ghacupha/java-faker.git</connection>
+        <developerConnection>scm:git@github.com/ghacupha/java-faker.git</developerConnection>
+        <url>git://github.com/ghacupha/java-faker.git</url>
     </scm>
+
     <developers>
         <developer>
-            <id>renshao</id>
-            <name>Ren Shao</name>
-            <email>renshao@gmail.com</email>
-        </developer>
-        <developer>
-            <id>codingricky</id>
-            <name>Ricky Yim</name>
+            <name>Edwin Njeru</name>
+            <email>mailnjeru@gmail.com</email>
         </developer>
     </developers>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
     <repositories>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -69,7 +118,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.24</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -108,6 +156,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
 		<pluginManagement>
 			<plugins>
@@ -116,18 +165,10 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.6.1</version>
 					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
-                <plugin>
-                    <groupId>org.eluder.coveralls</groupId>
-                    <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.3.0</version>
-                    <configuration>
-                        <repoToken>${env.COVERALLS_TOKEN}</repoToken>
-                    </configuration>
-                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>cobertura-maven-plugin</artifactId>
@@ -146,6 +187,45 @@
                             <goals>
                                 <goal>integration-test</goal>
                                 <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Setup scaffolding mycila license maven plugin-->
+                <!--Use with mvn "mvn license:check", "mvn license:format" & "mvn license:remove"-->
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${mycila.license.maven.plugin.version}</version>
+                    <configuration>
+                        <header>${license.header.location}</header>
+                        <headerDefinitions>
+                            <headerDefinition>
+                                ${license.header.definition}
+                            </headerDefinition>
+                        </headerDefinitions>
+                        <properties>
+                            <owner>${license.maven.owner}</owner>
+                            <email>${license.maven.email}</email>
+                        </properties>
+                        <excludes>
+                            <exclude>**/README</exclude>
+                            <exclude>**/CHANGELOG.md</exclude>
+                            <exclude>**/LICENSE</exclude>
+                            <exclude>**/.idea/**</exclude>
+                            <exclude>**/config/header_definition.xml</exclude>
+                            <exclude>**/.mvn/**</exclude>
+                            <exclude>**/.okhttpcache/**</exclude>
+                            <exclude>**/target/**</exclude>
+                            <exclude>src/test/resources/**</exclude>
+                            <exclude>src/main/resources/**</exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -179,6 +259,157 @@
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Print the change log as release notes...-->
+            <!--Run mvn generate-sources, to use-->
+            <plugin>
+                <groupId>se.bjurr.gitchangelog</groupId>
+                <artifactId>git-changelog-maven-plugin</artifactId>
+                <version>${git-changelog-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>GenerateGitChangelog</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>git-changelog</goal>
+                        </goals>
+                        <configuration>
+                            <!-- A file on filesystem //-->
+                            <file>CHANGELOG.md</file>
+                            <templateFile>${changelog.template.file}</templateFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Enforce Maven 3.5.0 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${maven.enforcer.required.maven.version}</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Setup Checkstyle, excluding module-info -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <!--Could run with mvn clean verify-->
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>run-checkstyle</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>module-info.java</excludes>
+                    <headerLocation>${checkstyle.config.headerLocation}</headerLocation>
+                    <maxAllowedViolations>${checkstyle.config.maxAllowedViolations}</maxAllowedViolations>
+                    <configLocation>${checkstyle.config.headerLocation}</configLocation>
+                    <consoleOutput>${checkstyle.config.consoleOutput}</consoleOutput>
+                    <failsOnError>${checkstyle.config.failsOnError}</failsOnError>
+                    <includeResources>${checkstyle.config.includeResources}</includeResources>
+                    <includeTestResources>${checkstyle.config.includeTestResources}</includeTestResources>
+                    <includeTestSourceDirectory>${checkstyle.config.includeTestSourceDirectory}</includeTestSourceDirectory>
+                    <linkXRef>${linkXRef}</linkXRef>
+                </configuration>
+            </plugin>
+            <!-- Setup Javadoc jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Setup source jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Setup spotbugs dependency, would normally only be in reporting section -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <goals><goal>spotbugs</goal></goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>3.1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- Setup JaCoCo code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
